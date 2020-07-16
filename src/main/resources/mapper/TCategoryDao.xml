@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghui.poem.dao.TCategoryDao">
+
+    <resultMap type="com.zhanghui.poem.entity.TCategory" id="TCategoryMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TCategoryMap">
+        select id,
+               name
+        from test.t_category
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TCategoryMap">
+        select
+        id, name
+        from test.t_category
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into test.t_category(name)
+        values (#{name})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.t_category
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from test.t_category
+        where id = #{id}
+    </delete>
+
+
+    <!--级联查询-->
+    <resultMap id="categoryMap" type="TCategory">
+            <id  property="id"            column="c_id" />
+           <result property="name"        column="c_name"/>
+        <collection ofType="TPoem"      property="tpoems">
+            <id property="id"             column="p_id"/>
+            <result property="name"       column="p_name"/>
+            <result property="author"     column="p_author"/>
+            <result property="type"       column="p_type"/>
+            <result property="content"    column="p_content"/>
+            <result property="href"       column="p_href"/>
+            <result property="authordes"  column="p_authordes"/>
+            <result property="origin"     column="p_origin"/>
+            <result property="imagepath"  column="p_imagepath"/>
+            <result property="categoryid" column="p_categoryid"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectPoemByTcategoryid" resultMap="categoryMap">
+        SELECT c.id         as c_id,
+               c.name       as c_name,
+               p.id         as p_id,
+               p.name       as p_name,
+               p.author     as p_author,
+               p.type       as p_type,
+               p.content    as p_content,
+               p.href       as p_href,
+               p.authordes  as p_authordes,
+               p.origin     as p_origin,
+               p.imagepath  as p_imagepath,
+               p.categoryid as p_categoryid
+        from test.t_category c
+                 LEFT JOIN test.t_poem p
+                           on p.categoryid = c.id
+        where c.id = #{id}
+    </select>
+
+</mapper>

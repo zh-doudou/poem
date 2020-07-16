@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhanghui.poem.dao.TPoemDao">
+
+    <resultMap type="com.zhanghui.poem.entity.TPoem" id="TPoemMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="author" column="author" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="href" column="href" jdbcType="VARCHAR"/>
+        <result property="authordes" column="authordes" jdbcType="VARCHAR"/>
+        <result property="origin" column="origin" jdbcType="VARCHAR"/>
+        <result property="imagepath" column="imagepath" jdbcType="VARCHAR"/>
+        <result property="categoryid" column="categoryId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TPoemMap">
+        select
+          id, name, author, type, content, href, authordes, origin, imagepath, categoryId
+        from test.t_poem
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TPoemMap">
+        select
+          id, name, author, type, content, href, authordes, origin, imagepath, categoryId
+        from test.t_poem
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TPoemMap">
+        select
+          id, name, author, type, content, href, authordes, origin, imagepath, categoryId
+        from test.t_poem
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="author != null and author != ''">
+                and author = #{author}
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="href != null and href != ''">
+                and href = #{href}
+            </if>
+            <if test="authordes != null and authordes != ''">
+                and authordes = #{authordes}
+            </if>
+            <if test="origin != null and origin != ''">
+                and origin = #{origin}
+            </if>
+            <if test="imagepath != null and imagepath != ''">
+                and imagepath = #{imagepath}
+            </if>
+            <if test="categoryid != null and categoryid != ''">
+                and categoryId = #{categoryid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" >
+        insert into test.t_poem(id,name, author, type, content, href, authordes, origin, imagepath, categoryId)
+        values (#{id},#{name}, #{author}, #{type}, #{content}, #{href}, #{authordes}, #{origin}, #{imagepath}, #{categoryid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update test.t_poem
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="author != null and author != ''">
+                author = #{author},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="href != null and href != ''">
+                href = #{href},
+            </if>
+            <if test="authordes != null and authordes != ''">
+                authordes = #{authordes},
+            </if>
+            <if test="origin != null and origin != ''">
+                origin = #{origin},
+            </if>
+            <if test="imagepath != null and imagepath != ''">
+                imagepath = #{imagepath},
+            </if>
+            <if test="categoryid != null and categoryid != ''">
+                categoryId = #{categoryid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from test.t_poem where id = #{id}
+    </delete>
+
+    <select id="queryCounts" resultType="Integer">
+        select count(id) from test.t_poem
+    </select>
+
+    <select id="queryall" resultType="TPoem">
+        select  id, name, author, type, content, href, authordes, origin, imagepath, categoryId from test.t_poem
+    </select>
+</mapper>

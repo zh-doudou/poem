@@ -1,0 +1,16 @@
+
+.dd {
+    background: url("a.png") no-repeat;
+    border: 0px #c12e2a solid;
+    height: 850px;
+    width: 1890px;
+    margin: 0 auto;
+}
+
+.d1 {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-top: 50px;
+/ / 上边距
+}
