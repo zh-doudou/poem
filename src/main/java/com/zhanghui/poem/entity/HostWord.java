@@ -12,3 +12,4 @@ public class HostWord {
     private String value;
     private Double score;
 }
+
